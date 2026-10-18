@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:CarnetDepenses.ViewModels"
+             x:Class="CarnetDepenses.MainPage">
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Padding="16" RowSpacing="10">
+        <VerticalStackLayout Spacing="8">
+            <Entry Placeholder="Libelle" Text="{Binding Libelle}" />
+            <Entry Placeholder="Montant" Text="{Binding MontantTexte}" Keyboard="Numeric" />
+            <Button Text="Ajouter" Command="{Binding AjouterCommand}" />
+        </VerticalStackLayout>
+        <Label Grid.Row="1" FontSize="18" FontAttributes="Bold"
+               Text="{Binding Total, StringFormat='Total : {0:N0} FCFA'}" />
+        <CollectionView Grid.Row="2" ItemsSource="{Binding Depenses}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                        <Label Text="{Binding Libelle}" VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="{Binding Montant}" VerticalOptions="Center" />
+                        <Button Grid.Column="2" Text="X"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:DepensesViewModel}}, Path=SupprimerCommand}"
+                                CommandParameter="{Binding .}" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>
+
