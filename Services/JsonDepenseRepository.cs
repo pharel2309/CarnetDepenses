@@ -26,6 +26,13 @@ public class JsonDepenseRepository : IDepenseRepository
         await EcrireAsync(l);
     }
 
+    public async Task ModifierAsync(Depense d)
+    {
+        var l = await ListerAsync();
+        int i = l.FindIndex(x => x.Id == d.Id);
+        if (i >= 0) { l[i] = d; await EcrireAsync(l); }
+    }
+
     public async Task SupprimerAsync(Depense d)
     {
         var l = await ListerAsync();

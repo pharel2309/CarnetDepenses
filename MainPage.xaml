@@ -3,15 +3,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:CarnetDepenses.ViewModels"
              x:Class="CarnetDepenses.MainPage">
-    <Grid RowDefinitions="Auto,Auto,*,Auto" Padding="16" RowSpacing="10">
+    <ContentPage.Resources>
+        <vm:InverseBoolConverter x:Key="InverseBool" />
+    </ContentPage.Resources>
+    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto" Padding="16" RowSpacing="10">
         <VerticalStackLayout Spacing="8">
             <Entry Placeholder="Libelle" Text="{Binding Libelle}" />
             <Entry Placeholder="Montant" Text="{Binding MontantTexte}" Keyboard="Numeric" />
-            <Button Text="Ajouter" Command="{Binding AjouterCommand}" />
+            <HorizontalStackLayout Spacing="8">
+                <Button Text="{Binding TexteBoutonAjout}" Command="{Binding AjouterCommand}" />
+                <Button Text="Annuler" Command="{Binding AnnulerCommand}"
+                        IsVisible="{Binding EstEnEdition}" />
+            </HorizontalStackLayout>
         </VerticalStackLayout>
-        <Label Grid.Row="1" FontSize="18" FontAttributes="Bold"
-               Text="{Binding Total, StringFormat='Total : {0:N0} FCFA'}" />
-        <CollectionView Grid.Row="2" ItemsSource="{Binding Depenses}">
+        <VerticalStackLayout Grid.Row="1" Spacing="4">
+            <Label FontSize="18" FontAttributes="Bold"
+                   Text="{Binding Total, StringFormat='Total : {0:N0} FCFA'}" />
+            <Entry Placeholder="Budget mensuel (FCFA)" Text="{Binding BudgetTexte}" Keyboard="Numeric" />
+            <ProgressBar Progress="{Binding ProgressionBudget}" />
+            <Label Text="{Binding TexteBudget}" TextColor="Red"
+                   IsVisible="{Binding BudgetDepasse}" />
+            <Label Text="{Binding TexteBudget}"
+                   IsVisible="{Binding BudgetDepasse, Converter={StaticResource InverseBool}}" />
+        </VerticalStackLayout>
+        <CollectionView Grid.Row="2" ItemsSource="{Binding Depenses}"
+                        SelectedItem="{Binding Selection, Mode=TwoWay}"
+                        SelectionMode="Single">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">

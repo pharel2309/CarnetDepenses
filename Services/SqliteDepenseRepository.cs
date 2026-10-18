@@ -27,6 +27,12 @@ public class SqliteDepenseRepository : IDepenseRepository
         await _db!.InsertAsync(d); // Id renseigne automatiquement
     }
 
+    public async Task ModifierAsync(Depense d)
+    {
+        await InitAsync();
+        await _db!.UpdateAsync(d);
+    }
+
     public async Task SupprimerAsync(Depense d)
     {
         await InitAsync();
